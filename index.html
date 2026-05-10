@@ -1,3 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommendation App</title>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Where Should You Go After Class?</h1>
+
+<div class="mermaid">
+
 flowchart TD
 
 A([Start]) --> B{What do you want to do after class?}
@@ -46,3 +79,8 @@ R10 --> Z
 R11 --> Z
 R12 --> Z
 R13 --> Z
+
+</div>
+
+</body>
+</html>
