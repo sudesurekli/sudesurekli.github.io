@@ -1,48 +1,210 @@
-flowchart TD
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where Should You Go After Class?</title>
 
-A([Start]) --> B{What do you want to do after class?}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f4f1ff, #e8f7ff);
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
 
-%% STUDY
-B -->|Study| C{Are you alone or with friends?}
-C -->|Alone| D{Do you have enough time?}
-D -->|Short time| R1[Nearby Cafes around Yaşar]
-D -->|Long time| R2[Quiet Study Place / Library-style Café]
-C -->|With friends| R3[Nearby Cafes around Yaşar]
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
 
-%% EAT
-B -->|Eat| E{Do you have short or long time?}
-E -->|Short time| R4[Nearby Cafes around Yaşar]
-E -->|Long time| F{Do you want to stay nearby or go far?}
-F -->|Nearby| R5[Forum Bornova]
-F -->|Far| R6[İstinye Park]
+    h1 {
+      color: #222;
+      margin-bottom: 10px;
+    }
 
-%% RELAX
-B -->|Relax| G{Are you tired or energetic?}
-G -->|Tired| H{Do you prefer calm or social places?}
-H -->|Calm| R7[Bostanlı / Karşıyaka Coast]
-H -->|Social| R8[Alsancak]
-G -->|Energetic| I{Do you want to stay nearby or go far?}
-I -->|Nearby| R9[Forum Bornova]
-I -->|Far| R10[Alsancak]
+    p {
+      color: #555;
+      margin-bottom: 25px;
+    }
 
-%% FUN
-B -->|Fun| J{Are you alone or with friends?}
-J -->|Alone| R11[Cinema at Folkart Bornova]
-J -->|With friends| K{Do you want to stay nearby or go far?}
-K -->|Nearby| R12[Forum Bornova]
-K -->|Far| R13[Cinema at Folkart Bornova]
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
 
-%% ENDINGS
-R1 --> Z([End])
-R2 --> Z
-R3 --> Z
-R4 --> Z
-R5 --> Z
-R6 --> Z
-R7 --> Z
-R8 --> Z
-R9 --> Z
-R10 --> Z
-R11 --> Z
-R12 --> Z
-R13 --> Z
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 12px;
+      background-color: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #f2f2f2;
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Where Should You Go After Class?</h1>
+    <p>A guide for Yaşar University students</p>
+
+    <label for="purpose">1. What do you want to do after class?</label>
+    <select id="purpose">
+      <option value="">Choose one</option>
+      <option value="study">Study</option>
+      <option value="eat">Eat</option>
+      <option value="relax">Relax</option>
+      <option value="fun">Fun</option>
+    </select>
+
+    <label for="social">2. Are you alone or with friends?</label>
+    <select id="social">
+      <option value="">Choose one</option>
+      <option value="alone">Alone</option>
+      <option value="friends">With friends</option>
+    </select>
+
+    <label for="time">3. How much time do you have?</label>
+    <select id="time">
+      <option value="">Choose one</option>
+      <option value="short">Short time</option>
+      <option value="long">Long time</option>
+    </select>
+
+    <label for="energy">4. How do you feel?</label>
+    <select id="energy">
+      <option value="">Choose one</option>
+      <option value="tired">Tired</option>
+      <option value="energetic">Energetic</option>
+    </select>
+
+    <label for="distance">5. How far do you want to go?</label>
+    <select id="distance">
+      <option value="">Choose one</option>
+      <option value="nearby">Nearby</option>
+      <option value="far">Far</option>
+    </select>
+
+    <button onclick="getRecommendation()">Get Recommendation</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function getRecommendation() {
+      const purpose = document.getElementById("purpose").value;
+      const social = document.getElementById("social").value;
+      const time = document.getElementById("time").value;
+      const energy = document.getElementById("energy").value;
+      const distance = document.getElementById("distance").value;
+
+      const resultBox = document.getElementById("result");
+
+      if (!purpose || !social || !time || !energy || !distance) {
+        resultBox.style.display = "block";
+        resultBox.innerHTML = "Please answer all questions first.";
+        return;
+      }
+
+      let recommendation = "";
+
+      if (purpose === "study" && social === "alone" && time === "short") {
+        recommendation = "Nearby Cafes around Yaşar";
+      }
+
+      else if (purpose === "study" && social === "alone" && time === "long") {
+        recommendation = "Quiet Study Place / Library-style Café";
+      }
+
+      else if (purpose === "study" && social === "friends") {
+        recommendation = "Nearby Cafes around Yaşar";
+      }
+
+      else if (purpose === "eat" && time === "short") {
+        recommendation = "Nearby Cafes around Yaşar";
+      }
+
+      else if (purpose === "eat" && time === "long" && distance === "nearby") {
+        recommendation = "Forum Bornova";
+      }
+
+      else if (purpose === "eat" && time === "long" && distance === "far") {
+        recommendation = "İstinye Park";
+      }
+
+      else if (purpose === "relax" && energy === "tired" && social === "alone") {
+        recommendation = "Bostanlı / Karşıyaka Coast";
+      }
+
+      else if (purpose === "relax" && energy === "tired" && social === "friends") {
+        recommendation = "Alsancak";
+      }
+
+      else if (purpose === "relax" && energy === "energetic" && distance === "nearby") {
+        recommendation = "Forum Bornova";
+      }
+
+      else if (purpose === "relax" && energy === "energetic" && distance === "far") {
+        recommendation = "Alsancak";
+      }
+
+      else if (purpose === "fun" && social === "alone") {
+        recommendation = "Cinema at Folkart Bornova";
+      }
+
+      else if (purpose === "fun" && social === "friends" && distance === "nearby") {
+        recommendation = "Forum Bornova";
+      }
+
+      else if (purpose === "fun" && social === "friends" && distance === "far") {
+        recommendation = "Cinema at Folkart Bornova";
+      }
+
+      else {
+        recommendation = "Nearby Cafes around Yaşar";
+      }
+
+      resultBox.style.display = "block";
+      resultBox.innerHTML = "Recommendation: " + recommendation;
+    }
+  </script>
+
+</body>
+</html>
