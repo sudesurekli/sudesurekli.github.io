@@ -1,301 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What Should I Eat? Recommendation App</title>
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --accent-color: #000000;
-            --button-bg: #f0f0f0;
-            --button-text: #000000;
-            --button-hover: #e0e0e0;
-            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+flowchart TD
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #121212;
-                --text-color: #ffffff;
-                --accent-color: #ffffff;
-                --button-bg: #222222;
-                --button-text: #ffffff;
-                --button-hover: #333333;
-            }
-        }
+A([Start]) --> B{What do you want to do after class?}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+%% STUDY
+B -->|Study| C{Are you alone or with friends?}
+C -->|Alone| D{Do you have enough time?}
+D -->|Short time| R1[Nearby Cafes around Yaşar]
+D -->|Long time| R2[Quiet Study Place / Library-style Café]
+C -->|With friends| R3[Nearby Cafes around Yaşar]
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+%% EAT
+B -->|Eat| E{Do you have short or long time?}
+E -->|Short time| R4[Nearby Cafes around Yaşar]
+E -->|Long time| F{Do you want to stay nearby or go far?}
+F -->|Nearby| R5[Forum Bornova]
+F -->|Far| R6[İstinye Park]
 
-        #app {
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid var(--accent-color);
-            padding: 30px;
-            border-radius: 4px;
-        }
+%% RELAX
+B -->|Relax| G{Are you tired or energetic?}
+G -->|Tired| H{Do you prefer calm or social places?}
+H -->|Calm| R7[Bostanlı / Karşıyaka Coast]
+H -->|Social| R8[Alsancak]
+G -->|Energetic| I{Do you want to stay nearby or go far?}
+I -->|Nearby| R9[Forum Bornova]
+I -->|Far| R10[Alsancak]
 
-        header {
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-        }
+%% FUN
+B -->|Fun| J{Are you alone or with friends?}
+J -->|Alone| R11[Cinema at Folkart Bornova]
+J -->|With friends| K{Do you want to stay nearby or go far?}
+K -->|Nearby| R12[Forum Bornova]
+K -->|Far| R13[Cinema at Folkart Bornova]
 
-        h1 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        p.question {
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .options {
-            display: grid;
-            gap: 15px;
-        }
-
-        button {
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            border: 2px solid var(--accent-color);
-            padding: 15px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s ease;
-            border-radius: 2px;
-        }
-
-        button:hover {
-            background-color: var(--button-hover);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        #result-container {
-            text-align: center;
-        }
-
-        .result-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-
-        .result-value {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .result-items {
-            font-size: 1.1rem;
-            padding: 20px;
-            background-color: var(--button-bg);
-            border: 1px dashed var(--accent-color);
-            margin-bottom: 30px;
-        }
-
-        .reset-btn {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            width: 100%;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .reset-btn:hover {
-            opacity: 0.9;
-        }
-    </style>
-</head>
-<body>
-
-<div id="app">
-    <header>
-        <h1>What Should I Eat?</h1>
-    </header>
-
-    <!-- Step 1: Hunger -->
-    <div id="step-hunger" class="step active">
-        <p class="question">How hungry are you?</p>
-        <div class="options">
-            <button onclick="setVariable('hunger', 'H')">High Hunger</button>
-            <button onclick="setVariable('hunger', 'L')">Low Hunger</button>
-        </div>
-    </div>
-
-    <!-- Step 2: Time -->
-    <div id="step-time" class="step">
-        <p class="question">How much time do you have?</p>
-        <div class="options">
-            <button onclick="setVariable('time', 'T')">Long (Plenty of time)</button>
-            <button onclick="setVariable('time', 'S')">Short (In a rush)</button>
-        </div>
-    </div>
-
-    <!-- Step 3: Budget -->
-    <div id="step-budget" class="step">
-        <p class="question">What is your budget like?</p>
-        <div class="options">
-            <button onclick="setVariable('budget', 'B')">High Budget</button>
-            <button onclick="setVariable('budget', 'D')">Low Budget</button>
-        </div>
-    </div>
-
-    <!-- Step 4: Cuisine (Only for Traditional Food) -->
-    <div id="step-cuisine" class="step">
-        <p class="question">Which cuisine?</p>
-        <div class="options">
-            <button onclick="setVariable('cuisine', 'TU')">Turkish (TU)</button>
-            <button onclick="setVariable('cuisine', 'IT')">Italian (IT)</button>
-            <button onclick="setVariable('cuisine', 'AS')">Asian (AS)</button>
-            <button onclick="setVariable('cuisine', 'MX')">Mexican (MX)</button>
-        </div>
-    </div>
-
-    <!-- Result -->
-    <div id="step-result" class="step">
-        <div id="result-container">
-            <p class="result-title">Recommendation:</p>
-            <div id="final-type" class="result-value"></div>
-            <div id="final-items" class="result-items"></div>
-            <button class="reset-btn" onclick="resetApp()">Start Over</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    let state = {
-        hunger: null,
-        time: null,
-        budget: null,
-        cuisine: null
-    };
-
-    function setVariable(key, value) {
-        state[key] = value;
-        nextStep(key);
-    }
-
-    function nextStep(currentKey) {
-        // Hide all steps
-        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-
-        if (currentKey === 'hunger') {
-            document.getElementById('step-time').classList.add('active');
-        } else if (currentKey === 'time') {
-            document.getElementById('step-budget').classList.add('active');
-        } else if (currentKey === 'budget') {
-            evaluateLogic();
-        } else if (currentKey === 'cuisine') {
-            displayFinalTraditional();
-        }
-    }
-
-    function evaluateLogic() {
-        const { hunger: H, time: T, budget: B } = state;
-        let result = null;
-
-        // Logic String Mappings
-        if (H === 'H' && T === 'T' && B === 'B') {
-            result = { type: 'Healthy Food (HE)', items: ['Salad', 'Chicken Bowl', 'Yogurt'] };
-        } 
-        else if (H === 'H' && T === 'T' && B === 'D') {
-            result = { type: 'TR' }; // Trigger Cuisine
-        } 
-        else if (H === 'H' && T === 'S' && B === 'B') {
-            result = { type: 'Fast Food (FF)', items: ['Burger', 'Pizza', 'Wrap'] };
-        } 
-        else if (H === 'H' && T === 'S' && B === 'D') {
-            result = { type: 'Fast Food (FF)', items: ['Burger', 'Fries'] };
-        } 
-        else if (H === 'L' && T === 'T' && B === 'B') {
-            result = { type: 'Healthy Food (HE)', items: ['Salad', 'Avocado Toast'] };
-        } 
-        else if (H === 'L' && T === 'T' && B === 'D') {
-            result = { type: 'TR' }; // Trigger Cuisine
-        } 
-        else if (H === 'L' && T === 'S' && B === 'B') {
-            result = { type: 'Healthy Food (HE)', items: ['Yogurt', 'Light Meal'] };
-        } 
-        else if (H === 'L' && T === 'S' && B === 'D') {
-            result = { type: 'Fast Food (FF)', items: ['Snack', 'Wrap'] };
-        }
-
-        if (result.type === 'TR') {
-            document.getElementById('step-cuisine').classList.add('active');
-        } else {
-            showFinal(result.type, result.items.join(', '));
-        }
-    }
-
-    function displayFinalTraditional() {
-        const cuisines = {
-            'TU': { label: 'Turkish (TU)', items: 'Mantı, Kuru Fasulye' },
-            'IT': { label: 'Italian (IT)', items: 'Pasta, Risotto' },
-            'AS': { label: 'Asian (AS)', items: 'Noodles, Sushi' },
-            'MX': { label: 'Mexican (MX)', items: 'Taco, Burrito' }
-        };
-        
-        const selection = cuisines[state.cuisine];
-        showFinal('Traditional Food (' + selection.label + ')', selection.items);
-    }
-
-    function showFinal(type, items) {
-        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-        document.getElementById('final-type').innerText = type;
-        document.getElementById('final-items').innerText = items;
-        document.getElementById('step-result').classList.add('active');
-    }
-
-    function resetApp() {
-        state = { hunger: null, time: null, budget: null, cuisine: null };
-        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-        document.getElementById('step-hunger').classList.add('active');
-    }
-</script>
-
-</body>
-</html>
+%% ENDINGS
+R1 --> Z([End])
+R2 --> Z
+R3 --> Z
+R4 --> Z
+R5 --> Z
+R6 --> Z
+R7 --> Z
+R8 --> Z
+R9 --> Z
+R10 --> Z
+R11 --> Z
+R12 --> Z
+R13 --> Z
