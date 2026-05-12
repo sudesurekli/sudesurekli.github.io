@@ -192,16 +192,24 @@
     function calculateResult() {
       let result = "";
 
-      if (activity === "study" && environment === "indoor" && time === "long") {
-        result = "Indoor study café near Yaşar University";
-      }
-
-      else if (activity === "study" && environment === "indoor" && time === "short") {
+      if (activity === "study" && environment === "indoor" && distance === "nearby" && time === "short") {
         result = "Nearby café around Yaşar for a quick study break";
       }
 
-      else if (activity === "study" && environment === "outdoor") {
+      else if (activity === "study" && environment === "indoor" && distance === "nearby" && time === "long") {
+        result = "Indoor study café near Yaşar University";
+      }
+
+      else if (activity === "study" && environment === "indoor" && distance === "far") {
+        result = "Konak Public Library";
+      }
+
+      else if (activity === "study" && environment === "outdoor" && distance === "nearby") {
         result = "Quiet outdoor café in Bornova";
+      }
+
+      else if (activity === "study" && environment === "outdoor" && distance === "far") {
+        result = "Karşıyaka seaside study spot";
       }
 
       else if (activity === "eat" && environment === "indoor" && distance === "nearby") {
@@ -212,40 +220,52 @@
         result = "İstinye Park restaurants";
       }
 
-      else if (activity === "eat" && environment === "outdoor" && distance === "far") {
-        result = "Bostanlı seaside cafés";
+      else if (activity === "eat" && environment === "indoor" && distance === "far" && budget !== "high") {
+        result = "Alsancak casual restaurants";
       }
 
       else if (activity === "eat" && environment === "outdoor" && distance === "nearby") {
         result = "Outdoor cafés around Küçükpark";
       }
 
-      else if (activity === "relax" && environment === "indoor") {
+      else if (activity === "eat" && environment === "outdoor" && distance === "far") {
+        result = "Bostanlı seaside cafés";
+      }
+
+      else if (activity === "relax" && environment === "indoor" && distance === "nearby") {
         result = "Folkart Bornova Cinema for a calm indoor break";
       }
 
-      else if (activity === "relax" && environment === "outdoor" && distance === "far") {
-        result = "Karşıyaka Coast Walk";
+      else if (activity === "relax" && environment === "indoor" && distance === "far") {
+        result = "A calm café in Alsancak";
       }
 
       else if (activity === "relax" && environment === "outdoor" && distance === "nearby") {
         result = "A calm outdoor café around Bornova";
       }
 
+      else if (activity === "relax" && environment === "outdoor" && distance === "far") {
+        result = "Karşıyaka Coast Walk";
+      }
+
       else if (activity === "fun" && environment === "indoor" && company === "alone") {
         result = "Cinema at Folkart Bornova";
       }
 
-      else if (activity === "fun" && environment === "indoor" && company === "friends") {
+      else if (activity === "fun" && environment === "indoor" && company === "friends" && distance === "nearby") {
         result = "Bowling, cinema, or food court at Forum Bornova";
       }
 
-      else if (activity === "fun" && environment === "outdoor" && distance === "far") {
-        result = "Alsancak night walk and coffee spots";
+      else if (activity === "fun" && environment === "indoor" && company === "friends" && distance === "far") {
+        result = "İstinye Park cinema and restaurants";
       }
 
       else if (activity === "fun" && environment === "outdoor" && distance === "nearby") {
         result = "Outdoor hangout around Küçükpark";
+      }
+
+      else if (activity === "fun" && environment === "outdoor" && distance === "far") {
+        result = "Alsancak night walk and coffee spots";
       }
 
       else {
