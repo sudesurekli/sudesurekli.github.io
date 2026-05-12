@@ -133,7 +133,11 @@
       <button onclick="chooseDistance('nearby')">Nearby</button>
       <button onclick="chooseDistance('far')">Far</button>
     </div>
-
+<div id="q7" class="question">
+  <h2>Do you prefer indoor or outdoor places?</h2>
+  <button onclick="chooseEnvironment('indoor')">Indoor</button>
+  <button onclick="chooseEnvironment('outdoor')">Outdoor</button>
+</div>
     <div id="result" class="result">
       <h2>Your Recommendation:</h2>
       <p id="resultText"></p>
@@ -148,7 +152,40 @@
     let energy = "";
     let placeType = "";
     let distance = "";
+let environment = "";
+    function chooseEnvironment(value) {
+  environment = value;
 
+  if (activity === "eat") {
+
+    if (environment === "indoor") {
+      showResult("Forum Bornova");
+    } else {
+      showResult("Bostanlı Coast");
+    }
+
+  }
+
+  else if (activity === "relax") {
+
+    if (environment === "indoor") {
+      showResult("Cinema at Folkart Bornova");
+    } else {
+      showResult("Karşıyaka Coast");
+    }
+
+  }
+
+  else if (activity === "fun") {
+
+    if (environment === "indoor") {
+      showResult("Forum Bornova");
+    } else {
+      showResult("Alsancak");
+    }
+
+  }
+}
     function hideAllQuestions() {
       document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
     }
@@ -239,7 +276,8 @@
       distance = value;
 
       if (activity === "eat") {
-        if (distance === "nearby") {
+        if (distance === "nearby") { 
+          showQuestion("q7");
           showResult("Forum Bornova");
         } else {
           showResult("İstinye Park");
