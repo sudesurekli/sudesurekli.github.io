@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f6d365, #fda085);
+      background: linear-gradient(135deg, #667eea, #764ba2);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -20,10 +20,10 @@
     .app {
       background: white;
       width: 90%;
-      max-width: 520px;
-      padding: 30px;
+      max-width: 540px;
+      padding: 32px;
       border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.25);
       text-align: center;
     }
 
@@ -53,7 +53,7 @@
       padding: 14px;
       border: none;
       border-radius: 14px;
-      background-color: #ff7a59;
+      background-color: #667eea;
       color: white;
       font-size: 16px;
       cursor: pointer;
@@ -61,22 +61,22 @@
     }
 
     button:hover {
-      background-color: #e85f3f;
+      background-color: #5568c9;
       transform: scale(1.02);
     }
 
     .result {
       display: none;
       margin-top: 25px;
-      padding: 20px;
+      padding: 22px;
       border-radius: 18px;
-      background-color: #fff3e8;
-      border: 2px solid #ffb088;
+      background-color: #f1efff;
+      border: 2px solid #764ba2;
     }
 
     .result h2 {
       margin-top: 0;
-      color: #d94f2b;
+      color: #5a35a0;
     }
 
     .restart {
@@ -94,50 +94,47 @@
 
   <div class="app">
     <h1>Where Should You Go After Class?</h1>
-    <p>A recommendation app for Yaşar University students.</p>
+    <p>A local recommendation app for Yaşar University students.</p>
 
     <div id="q1" class="question active">
       <h2>What do you want to do after class?</h2>
-      <button onclick="chooseActivity('study')">Study</button>
-      <button onclick="chooseActivity('eat')">Eat</button>
-      <button onclick="chooseActivity('relax')">Relax</button>
-      <button onclick="chooseActivity('fun')">Fun</button>
+      <button onclick="answerActivity('study')">Study</button>
+      <button onclick="answerActivity('eat')">Eat</button>
+      <button onclick="answerActivity('relax')">Relax</button>
+      <button onclick="answerActivity('fun')">Have Fun</button>
     </div>
 
     <div id="q2" class="question">
       <h2>Are you alone or with friends?</h2>
-      <button onclick="chooseCompany('alone')">Alone</button>
-      <button onclick="chooseCompany('friends')">With friends</button>
+      <button onclick="answerCompany('alone')">Alone</button>
+      <button onclick="answerCompany('friends')">With friends</button>
     </div>
 
     <div id="q3" class="question">
       <h2>How much time do you have?</h2>
-      <button onclick="chooseTime('short')">Short time</button>
-      <button onclick="chooseTime('long')">Long time</button>
+      <button onclick="answerTime('short')">Short time</button>
+      <button onclick="answerTime('long')">Long time</button>
     </div>
 
     <div id="q4" class="question">
-      <h2>Are you tired or energetic?</h2>
-      <button onclick="chooseEnergy('tired')">Tired</button>
-      <button onclick="chooseEnergy('energetic')">Energetic</button>
+      <h2>What is your budget?</h2>
+      <button onclick="answerBudget('low')">Low budget</button>
+      <button onclick="answerBudget('medium')">Medium budget</button>
+      <button onclick="answerBudget('high')">High budget</button>
     </div>
 
     <div id="q5" class="question">
-      <h2>Do you prefer calm or social places?</h2>
-      <button onclick="choosePlaceType('calm')">Calm</button>
-      <button onclick="choosePlaceType('social')">Social</button>
+      <h2>Do you want to stay nearby or go far?</h2>
+      <button onclick="answerDistance('nearby')">Nearby</button>
+      <button onclick="answerDistance('far')">Far</button>
     </div>
 
     <div id="q6" class="question">
-      <h2>Do you want to stay nearby or go far?</h2>
-      <button onclick="chooseDistance('nearby')">Nearby</button>
-      <button onclick="chooseDistance('far')">Far</button>
+      <h2>Do you prefer indoor or outdoor places?</h2>
+      <button onclick="answerEnvironment('indoor')">Indoor</button>
+      <button onclick="answerEnvironment('outdoor')">Outdoor</button>
     </div>
-<div id="q7" class="question">
-  <h2>Do you prefer indoor or outdoor places?</h2>
-  <button onclick="chooseEnvironment('indoor')">Indoor</button>
-  <button onclick="chooseEnvironment('outdoor')">Outdoor</button>
-</div>
+
     <div id="result" class="result">
       <h2>Your Recommendation:</h2>
       <p id="resultText"></p>
@@ -149,43 +146,10 @@
     let activity = "";
     let company = "";
     let time = "";
-    let energy = "";
-    let placeType = "";
+    let budget = "";
     let distance = "";
-let environment = "";
-    function chooseEnvironment(value) {
-  environment = value;
+    let environment = "";
 
-  if (activity === "eat") {
-
-    if (environment === "indoor") {
-      showResult("Forum Bornova");
-    } else {
-      showResult("Bostanlı Coast");
-    }
-
-  }
-
-  else if (activity === "relax") {
-
-    if (environment === "indoor") {
-      showResult("Cinema at Folkart Bornova");
-    } else {
-      showResult("Karşıyaka Coast");
-    }
-
-  }
-
-  else if (activity === "fun") {
-
-    if (environment === "indoor") {
-      showResult("Forum Bornova");
-    } else {
-      showResult("Alsancak");
-    }
-
-  }
-}
     function hideAllQuestions() {
       document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
     }
@@ -195,110 +159,88 @@ let environment = "";
       document.getElementById(id).classList.add("active");
     }
 
-    function chooseActivity(value) {
+    function answerActivity(value) {
       activity = value;
-
-      if (activity === "study") {
-        showQuestion("q2");
-      } 
-      else if (activity === "eat") {
-        showQuestion("q3");
-      } 
-      else if (activity === "relax") {
-        showQuestion("q4");
-      } 
-      else if (activity === "fun") {
-        showQuestion("q2");
-      }
+      showQuestion("q2");
     }
 
-    function chooseCompany(value) {
+    function answerCompany(value) {
       company = value;
-
-      if (activity === "study") {
-        if (company === "alone") {
-          showQuestion("q3");
-        } else {
-          showResult("Nearby Cafes around Yaşar");
-        }
-      }
-
-      else if (activity === "fun") {
-        if (company === "alone") {
-          showResult("Cinema at Folkart Bornova");
-        } else {
-          showQuestion("q6");
-        }
-      }
+      showQuestion("q3");
     }
 
-    function chooseTime(value) {
+    function answerTime(value) {
       time = value;
-
-      if (activity === "study") {
-        if (time === "short") {
-          showResult("Nearby Cafes around Yaşar");
-        } else {
-          showResult("Quiet Study Place / Library-style Café");
-        }
-      }
-
-      else if (activity === "eat") {
-        if (time === "short") {
-          showResult("Nearby Cafes around Yaşar");
-        } else {
-          showQuestion("q6");
-        }
-      }
+      showQuestion("q4");
     }
 
-    function chooseEnergy(value) {
-      energy = value;
-
-      if (energy === "tired") {
-        showQuestion("q5");
-      } else {
-        showQuestion("q6");
-      }
+    function answerBudget(value) {
+      budget = value;
+      showQuestion("q5");
     }
 
-    function choosePlaceType(value) {
-      placeType = value;
-
-      if (placeType === "calm") {
-        showResult("Bostanlı / Karşıyaka Coast");
-      } else {
-        showResult("Alsancak");
-      }
-    }
-
-    function chooseDistance(value) {
+    function answerDistance(value) {
       distance = value;
+      showQuestion("q6");
+    }
 
-      if (activity === "eat") {
-        if (distance === "nearby") { 
-          showQuestion("q7");
-          showResult("Forum Bornova");
-        } else {
-          showResult("İstinye Park");
-        }
+    function answerEnvironment(value) {
+      environment = value;
+      calculateResult();
+    }
+
+    function calculateResult() {
+      let result = "";
+
+      if (activity === "study" && company === "alone" && time === "short") {
+        result = "Nearby Cafes around Yaşar";
       }
 
-      else if (activity === "relax") {
-        if (distance === "nearby") {
-          showResult("Forum Bornova");
-        } else {
-          showResult("Alsancak");
-        }
+      else if (activity === "study" && company === "alone" && time === "long" && environment === "indoor") {
+        result = "Quiet Study Place / Library-style Café";
       }
 
-      else if (activity === "fun") {
-        if (distance === "nearby") {
-          showResult("Forum Bornova");
-        } else {
-          showResult("Cinema at Folkart Bornova");
-        }
+      else if (activity === "study" && company === "friends") {
+        result = "Nearby Cafes around Yaşar";
       }
+
+      else if (activity === "eat" && time === "short") {
+        result = "Nearby Cafes around Yaşar";
+      }
+
+      else if (activity === "eat" && distance === "nearby" && budget !== "high") {
+        result = "Forum Bornova";
+      }
+
+      else if (activity === "eat" && distance === "far" && budget === "high") {
+        result = "İstinye Park";
+      }
+
+      else if (activity === "relax" && environment === "outdoor" && distance === "far") {
+        result = "Bostanlı / Karşıyaka Coast";
+      }
+
+      else if (activity === "relax" && environment === "indoor") {
+        result = "Folkart Bornova Cinema";
+      }
+
+      else if (activity === "fun" && company === "alone" && environment === "indoor") {
+        result = "Cinema at Folkart Bornova";
+      }
+
+      else if (activity === "fun" && company === "friends" && distance === "nearby") {
+        result = "Forum Bornova";
+      }
+
+      else if (activity === "fun" && company === "friends" && distance === "far") {
+        result = "Alsancak";
+      }
+
+      else {
+        result = "Forum Bornova";
+      }
+
+      showResult(result);
     }
 
     function showResult(text) {
@@ -311,9 +253,9 @@ let environment = "";
       activity = "";
       company = "";
       time = "";
-      energy = "";
-      placeType = "";
+      budget = "";
       distance = "";
+      environment = "";
 
       document.getElementById("result").style.display = "none";
       showQuestion("q1");
