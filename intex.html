@@ -1,48 +1,286 @@
-flowchart TD
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where Should You Go After Class?</title>
 
-A([Start]) --> B{What do you want to do after class?}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #222;
+    }
 
-%% STUDY
-B -->|Study| C{Are you alone or with friends?}
-C -->|Alone| D{Do you have enough time?}
-D -->|Short time| R1[Nearby Cafes around Yaşar]
-D -->|Long time| R2[Quiet Study Place / Library-style Café]
-C -->|With friends| R3[Nearby Cafes around Yaşar]
+    .app {
+      background: white;
+      width: 90%;
+      max-width: 520px;
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
 
-%% EAT
-B -->|Eat| E{Do you have short or long time?}
-E -->|Short time| R4[Nearby Cafes around Yaşar]
-E -->|Long time| F{Do you want to stay nearby or go far?}
-F -->|Nearby| R5[Forum Bornova]
-F -->|Far| R6[İstinye Park]
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
 
-%% RELAX
-B -->|Relax| G{Are you tired or energetic?}
-G -->|Tired| H{Do you prefer calm or social places?}
-H -->|Calm| R7[Bostanlı / Karşıyaka Coast]
-H -->|Social| R8[Alsancak]
-G -->|Energetic| I{Do you want to stay nearby or go far?}
-I -->|Nearby| R9[Forum Bornova]
-I -->|Far| R10[Alsancak]
+    p {
+      color: #555;
+      font-size: 15px;
+    }
 
-%% FUN
-B -->|Fun| J{Are you alone or with friends?}
-J -->|Alone| R11[Cinema at Folkart Bornova]
-J -->|With friends| K{Do you want to stay nearby or go far?}
-K -->|Nearby| R12[Forum Bornova]
-K -->|Far| R13[Cinema at Folkart Bornova]
+    .question {
+      display: none;
+      margin-top: 25px;
+    }
 
-%% ENDINGS
-R1 --> Z([End])
-R2 --> Z
-R3 --> Z
-R4 --> Z
-R5 --> Z
-R6 --> Z
-R7 --> Z
-R8 --> Z
-R9 --> Z
-R10 --> Z
-R11 --> Z
-R12 --> Z
-R13 --> Z
+    .question.active {
+      display: block;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background-color: #ff7a59;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #e85f3f;
+      transform: scale(1.02);
+    }
+
+    .result {
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 18px;
+      background-color: #fff3e8;
+      border: 2px solid #ffb088;
+    }
+
+    .result h2 {
+      margin-top: 0;
+      color: #d94f2b;
+    }
+
+    .restart {
+      background-color: #333;
+      margin-top: 20px;
+    }
+
+    .restart:hover {
+      background-color: #111;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+    <h1>Where Should You Go After Class?</h1>
+    <p>A recommendation app for Yaşar University students.</p>
+
+    <div id="q1" class="question active">
+      <h2>What do you want to do after class?</h2>
+      <button onclick="chooseActivity('study')">Study</button>
+      <button onclick="chooseActivity('eat')">Eat</button>
+      <button onclick="chooseActivity('relax')">Relax</button>
+      <button onclick="chooseActivity('fun')">Fun</button>
+    </div>
+
+    <div id="q2" class="question">
+      <h2>Are you alone or with friends?</h2>
+      <button onclick="chooseCompany('alone')">Alone</button>
+      <button onclick="chooseCompany('friends')">With friends</button>
+    </div>
+
+    <div id="q3" class="question">
+      <h2>How much time do you have?</h2>
+      <button onclick="chooseTime('short')">Short time</button>
+      <button onclick="chooseTime('long')">Long time</button>
+    </div>
+
+    <div id="q4" class="question">
+      <h2>Are you tired or energetic?</h2>
+      <button onclick="chooseEnergy('tired')">Tired</button>
+      <button onclick="chooseEnergy('energetic')">Energetic</button>
+    </div>
+
+    <div id="q5" class="question">
+      <h2>Do you prefer calm or social places?</h2>
+      <button onclick="choosePlaceType('calm')">Calm</button>
+      <button onclick="choosePlaceType('social')">Social</button>
+    </div>
+
+    <div id="q6" class="question">
+      <h2>Do you want to stay nearby or go far?</h2>
+      <button onclick="chooseDistance('nearby')">Nearby</button>
+      <button onclick="chooseDistance('far')">Far</button>
+    </div>
+
+    <div id="result" class="result">
+      <h2>Your Recommendation:</h2>
+      <p id="resultText"></p>
+      <button class="restart" onclick="restartApp()">Start Again</button>
+    </div>
+  </div>
+
+  <script>
+    let activity = "";
+    let company = "";
+    let time = "";
+    let energy = "";
+    let placeType = "";
+    let distance = "";
+
+    function hideAllQuestions() {
+      document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
+    }
+
+    function showQuestion(id) {
+      hideAllQuestions();
+      document.getElementById(id).classList.add("active");
+    }
+
+    function chooseActivity(value) {
+      activity = value;
+
+      if (activity === "study") {
+        showQuestion("q2");
+      } 
+      else if (activity === "eat") {
+        showQuestion("q3");
+      } 
+      else if (activity === "relax") {
+        showQuestion("q4");
+      } 
+      else if (activity === "fun") {
+        showQuestion("q2");
+      }
+    }
+
+    function chooseCompany(value) {
+      company = value;
+
+      if (activity === "study") {
+        if (company === "alone") {
+          showQuestion("q3");
+        } else {
+          showResult("Nearby Cafes around Yaşar");
+        }
+      }
+
+      else if (activity === "fun") {
+        if (company === "alone") {
+          showResult("Cinema at Folkart Bornova");
+        } else {
+          showQuestion("q6");
+        }
+      }
+    }
+
+    function chooseTime(value) {
+      time = value;
+
+      if (activity === "study") {
+        if (time === "short") {
+          showResult("Nearby Cafes around Yaşar");
+        } else {
+          showResult("Quiet Study Place / Library-style Café");
+        }
+      }
+
+      else if (activity === "eat") {
+        if (time === "short") {
+          showResult("Nearby Cafes around Yaşar");
+        } else {
+          showQuestion("q6");
+        }
+      }
+    }
+
+    function chooseEnergy(value) {
+      energy = value;
+
+      if (energy === "tired") {
+        showQuestion("q5");
+      } else {
+        showQuestion("q6");
+      }
+    }
+
+    function choosePlaceType(value) {
+      placeType = value;
+
+      if (placeType === "calm") {
+        showResult("Bostanlı / Karşıyaka Coast");
+      } else {
+        showResult("Alsancak");
+      }
+    }
+
+    function chooseDistance(value) {
+      distance = value;
+
+      if (activity === "eat") {
+        if (distance === "nearby") {
+          showResult("Forum Bornova");
+        } else {
+          showResult("İstinye Park");
+        }
+      }
+
+      else if (activity === "relax") {
+        if (distance === "nearby") {
+          showResult("Forum Bornova");
+        } else {
+          showResult("Alsancak");
+        }
+      }
+
+      else if (activity === "fun") {
+        if (distance === "nearby") {
+          showResult("Forum Bornova");
+        } else {
+          showResult("Cinema at Folkart Bornova");
+        }
+      }
+    }
+
+    function showResult(text) {
+      hideAllQuestions();
+      document.getElementById("result").style.display = "block";
+      document.getElementById("resultText").innerText = text;
+    }
+
+    function restartApp() {
+      activity = "";
+      company = "";
+      time = "";
+      energy = "";
+      placeType = "";
+      distance = "";
+
+      document.getElementById("result").style.display = "none";
+      showQuestion("q1");
+    }
+  </script>
+
+</body>
+</html>
